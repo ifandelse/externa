@@ -18,3 +18,5 @@ desktop.ini
 report/
 coverage/
 bower/
+dist/
+.nyc_output/
