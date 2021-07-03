@@ -11,3 +11,4 @@ bower*
 coverage*
 report*
 example/*
+.nyc_output/*
