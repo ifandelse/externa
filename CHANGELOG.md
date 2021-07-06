@@ -1,5 +1,7 @@
-### 0.1.3
+### 0.1.4
 
+* Continued tag-release troubleshooting
+### 0.1.3
 * Fixing changelog - continuing resolution of tag-release 2FA issue
 
 ### 0.1.2
