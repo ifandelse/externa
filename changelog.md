@@ -1,5 +1,9 @@
-### 0.1.1
 
+### 0.1.2
+
+* Fixing changelog again - tag-release is having some issues :(
+
+### 0.1.1
 * Fix changelog
 
 ### 0.1.0
