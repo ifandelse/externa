@@ -1,5 +1,9 @@
 ## 0.x
 
+### 0.1.6
+
+* Once more into the tag-release breach...
+
 ### 0.1.5
 
 * Change casing of changelog file to match tag-release expectations
