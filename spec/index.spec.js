@@ -16,6 +16,7 @@ describe( "externa - main export", () => {
 		getWindowAdapterFsm,
 		setLogNamespace,
 		origWarn,
+		origErr,
 		proxySpy,
 		logger;
 
@@ -60,6 +61,8 @@ describe( "externa - main export", () => {
 
 		origWarn = console.warn;
 		console.warn = sinon.stub();
+		origErr = console.error;
+		console.error = sinon.stub();
 		instance = global.proxyquire( "../src/index.js", {
 			"./inbound": { postMessageListener, },
 			"./state": state,
@@ -72,6 +75,7 @@ describe( "externa - main export", () => {
 
 	afterEach( () => {
 		console.warn = origWarn;
+		console.error = origErr;
 	} );
 
 	it( "should export an object with the expected keys", () => {
@@ -149,7 +153,12 @@ describe( "externa - main export", () => {
 		} );
 	} );
 
-	describe( "when calling connectWorker", () => {} );
+	describe( "when calling connectWorker", () => {
+		it( "should log an error (not yet implemented)", () => {
+			instance.connectWorker();
+			console.error.should.be.calledOnceWithExactly( "Worker support has not been implemented yet" );
+		} );
+	} );
 
 	describe( "when calling disconnect", () => {
 		beforeEach( () => {

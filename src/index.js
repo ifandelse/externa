@@ -37,7 +37,9 @@ export default {
 	},
 
 	// Intentionally not yet implemented
-	connectWorker() {},
+	connectWorker() {
+		console.error( "Worker support has not been implemented yet" ); // eslint-disable-line no-console
+	},
 
 	disconnect() {
 		logger( "disconnecting" );
