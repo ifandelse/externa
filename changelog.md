@@ -1,6 +1,6 @@
-### v0.0.1
-* Ah, still has that new repo smell
-* Initial add of candidate iframe functionality
+### 0.1.1
+
+* Fix changelog
 
 ### 0.1.0
 
@@ -9,3 +9,7 @@
 * Add coverage output dir to npmignore
 * Remove assets that shouldn't have been added :-)
 * Initial Add
+
+### v0.0.1
+* Ah, still has that new repo smell
+* Initial add of candidate iframe functionality
