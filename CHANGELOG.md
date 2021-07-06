@@ -1,5 +1,9 @@
 ### 0.1.4
 
+### 0.1.5
+
+* Change casing of changelog file to match tag-release expectations
+
 * Continued tag-release troubleshooting
 ### 0.1.3
 * Fixing changelog - continuing resolution of tag-release 2FA issue
