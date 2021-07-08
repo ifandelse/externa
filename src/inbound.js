@@ -6,7 +6,8 @@ import { logger } from "./logger";
 
 export function postMessageListener( event ) {
 	if ( event.data.externa ) {
-		const source = event.source;
+		// with web workers, the event.source prop is null
+		const source = event.source || event.currentTarget;
 		const payload = event.data.payload;
 		let remote = state.knownExternals.get( source );
 		if ( !remote ) {

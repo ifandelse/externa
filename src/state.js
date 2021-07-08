@@ -2,7 +2,7 @@ import { createUUID } from "./helpers";
 
 export default {
 	instanceId: createUUID(),
-	isWorker: ( typeof window === "undefined" ) && !!postMessage && !!location,
+	isWorker: false,
 	knownExternals: new Map(),
 };
 

@@ -43,6 +43,10 @@ export function getWindowAdapterFsm() {
 						this.logger( "PONG MESSAGE FROM:", data.instanceId, remote.state );
 						remote.receivePong( data );
 					},
+					"externa.disconnect"( { data, remote, } ) {
+						// TODO: graceful cleanup
+						this.logger( "DISCONNECT MESSAGE FROM:", data.instanceId, remote.state );
+					},
 				},
 				paused: {
 					resume: "ready",

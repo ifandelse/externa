@@ -68,6 +68,7 @@ describe( "externa - windowAdapterFsm", () => {
 							"externa.message": sinon.match.func,
 							"externa.ping": sinon.match.func,
 							"externa.pong": sinon.match.func,
+							"externa.disconnect": sinon.match.func,
 						},
 						paused: {
 							resume: "ready",
@@ -130,9 +131,11 @@ describe( "externa - windowAdapterFsm", () => {
 					beforeEach( () => {
 						fsmOptions.states.ready[ "externa.message" ].call( machinaStub, { data: dataStub, remote: remoteStub, } );
 					} );
+
 					it( "should that we've received a normal message", () => {
 						machinaStub.logger.should.be.calledOnceWithExactly( "NORMAL MESSAGE FROM:", "calzone", "REMOTE_STATE" );
 					} );
+
 					it( "should tell the remote proxy to receive the message", () => {
 						remoteStub.receiveMessage.should.be.calledOnceWithExactly( dataStub );
 					} );
@@ -142,9 +145,11 @@ describe( "externa - windowAdapterFsm", () => {
 					beforeEach( () => {
 						fsmOptions.states.ready[ "externa.ping" ].call( machinaStub, { data: dataStub, remote: remoteStub, } );
 					} );
+
 					it( "should log that we've received a ping message", () => {
 						machinaStub.logger.should.be.calledOnceWithExactly( "PING MESSAGE FROM:", "calzone", "REMOTE_STATE" );
 					} );
+
 					it( "should tell the remote proxy to receive the ping", () => {
 						remoteStub.receivePing.should.be.calledOnceWithExactly( dataStub );
 					} );
@@ -158,11 +163,23 @@ describe( "externa - windowAdapterFsm", () => {
 					beforeEach( () => {
 						fsmOptions.states.ready[ "externa.pong" ].call( machinaStub, { data: dataStub, remote: remoteStub, } );
 					} );
+
 					it( "should log that we've received a pong message", () => {
 						machinaStub.logger.should.be.calledOnceWithExactly( "PONG MESSAGE FROM:", "calzone", "REMOTE_STATE" );
 					} );
+
 					it( "should tell the remote proxy to receive the pong", () => {
 						remoteStub.receivePong.should.be.calledOnceWithExactly( dataStub );
+					} );
+				} );
+
+				describe( "when calling 'externa.disconnect'", () => {
+					beforeEach( () => {
+						fsmOptions.states.ready[ "externa.disconnect" ].call( machinaStub, { data: dataStub, remote: remoteStub, } );
+					} );
+
+					it( "should log that we've received a disconnect message", () => {
+						machinaStub.logger.should.be.calledOnceWithExactly( "DISCONNECT MESSAGE FROM:", "calzone", "REMOTE_STATE" );
 					} );
 				} );
 			} );

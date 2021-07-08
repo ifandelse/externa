@@ -14,8 +14,8 @@ export default {
 		externa.init( {
 			instanceId: qs.instanceId || "IFRAME",
 			handlers: {
-				TESTY_TEST_TEST( msg ) {
-					console.log( "Externa Message:", msg );
+				DINNER_OPTIONS( msg ) {
+					console.log( "Externa Message (Dinner options):", msg );
 				},
 			},
 		} );

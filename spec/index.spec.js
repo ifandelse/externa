@@ -22,10 +22,16 @@ describe( "externa - main export", () => {
 
 	beforeEach( () => {
 		postMessageListener = sinon.stub();
-		global.window.removeEventListener = sinon.stub();
+		global.removeEventListener = sinon.stub();
+		global.addEventListener = sinon.stub();
 
-		const knownExternal1 = { src: "external_1", };
-		newExternal2 = { src: "external_2", };
+		const knownExternal1 = {
+			src: "external_1",
+		};
+		newExternal2 = {
+			src: "external_2",
+		};
+
 		getExternals = sinon.stub().returns( [
 			knownExternal1,
 			newExternal2,
@@ -34,7 +40,7 @@ describe( "externa - main export", () => {
 		sendPing = sinon.stub();
 		disconnect = sinon.stub();
 		sendMessage = sinon.stub();
-		knownExternals.set( knownExternal1, { sendPing, disconnect, sendMessage, } );
+		knownExternals.set( knownExternal1, { sendPing, disconnect, sendMessage, target: {}, } );
 		state = {
 			instanceId: "calzone",
 			knownExternals,
@@ -132,6 +138,19 @@ describe( "externa - main export", () => {
 				init.should.be.calledOnce();
 			} );
 		} );
+
+		describe( "when it's a web worker", () => {
+			beforeEach( () => {
+				instance.init( {
+					instanceId: "webworker",
+					isWorker: true,
+				} );
+			} );
+
+			it( "should set the state.isWorker prop to true", () => {
+				state.isWorker.should.be.true();
+			} );
+		} );
 	} );
 
 	describe( "when calling connect", () => {
@@ -154,14 +173,38 @@ describe( "externa - main export", () => {
 	} );
 
 	describe( "when calling connectWorker", () => {
-		it( "should log an error (not yet implemented)", () => {
-			instance.connectWorker();
-			console.error.should.be.calledOnceWithExactly( "Worker support has not been implemented yet" );
+		let fakeWorker;
+
+		beforeEach( () => {
+			fakeWorker = { soFake: true, };
+			instance.connectWorker( fakeWorker );
+		} );
+
+		it( "should set the onmessage handler", () => {
+			fakeWorker.onmessage.should.equal( postMessageListener );
+		} );
+
+		it( "should instantiate a proxy for the worker", () => {
+			proxySpy.should.be.calledOnce().and.calledWithNew();
+			state.knownExternals.has( fakeWorker ).should.be.true();
+		} );
+
+		it( "should ping the external to start the handshake", () => {
+			sendPing.should.be.calledOnce();
 		} );
 	} );
 
 	describe( "when calling disconnect", () => {
+		let knownExternal3,
+			fakeProxy3;
+
 		beforeEach( () => {
+			knownExternal3 = {
+				src: "external_3",
+			};
+			fakeProxy3 = { sendPing, disconnect, sendMessage, target: { onmessage: postMessageListener, }, };
+			state.knownExternals.set( knownExternal3, fakeProxy3 );
+			console.log( state.knownExternals );
 			instance.disconnect();
 		} );
 
@@ -170,11 +213,15 @@ describe( "externa - main export", () => {
 		} );
 
 		it( "should remove the window message event listener", () => {
-			global.window.removeEventListener.should.be.calledOnceWithExactly( "message", postMessageListener );
+			global.removeEventListener.should.be.calledOnceWithExactly( "message", postMessageListener );
 		} );
 
-		it( "should call disconnect on the proxy", () => {
-			disconnect.should.be.calledOnce();
+		it( "should set any web worker's onmessage prop to null", () => {
+			( fakeProxy3.target.onmessage === null ).should.be.true();
+		} );
+
+		it( "should call disconnect on each proxy", () => {
+			disconnect.should.be.calledTwice();
 		} );
 
 		it( "should clear the list of knownExternals", () => {

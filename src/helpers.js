@@ -19,7 +19,9 @@ export function createUUID() {
 
 export function getExternals() {
 	if ( state.isWorker ) {
-		return [ this, ]; // eslint-disable-line no-invalid-this
+		/* istanbul ignore next */
+		const context = this || self; // eslint-disable-line no-invalid-this
+		return [ context, ]; // eslint-disable-line no-invalid-this
 	}
 	const targets = [ ...document.getElementsByTagName( "iframe" ), ].map( i => {
 		return i.contentWindow;

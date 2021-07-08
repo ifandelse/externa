@@ -6,13 +6,14 @@ import { ExternaRemoteProxy, setHandlers } from "./ExternaRemoteProxy";
 import { getWindowAdapterFsm } from "./windowAdapterFsm";
 import { setLogNamespace, logger } from "./logger";
 
-window.addEventListener( "message", postMessageListener );
+addEventListener( "message", postMessageListener );
 
 export default {
 	knownExternals: state.knownExternals,
 
 	init( options ) {
 		state.instanceId = options.instanceId || state.instanceId;
+		state.isWorker = ( options.isWorker !== undefined ) ? options.isWorker : state.isWorker;
 		setLogNamespace( state.instanceId );
 		logger( "initializing" );
 		if ( options.handlers ) {
@@ -37,16 +38,22 @@ export default {
 	},
 
 	// Intentionally not yet implemented
-	connectWorker() {
-		console.error( "Worker support has not been implemented yet" ); // eslint-disable-line no-console
+	connectWorker( worker ) {
+		worker.onmessage = postMessageListener;
+		const proxy = new ExternaRemoteProxy( {}, worker );
+		state.knownExternals.set( worker, proxy );
+		proxy.sendPing();
 	},
 
 	disconnect() {
 		logger( "disconnecting" );
-		window.removeEventListener( "message", postMessageListener );
+		removeEventListener( "message", postMessageListener );
 		// eslint-disable-next-line no-unused-vars
 		for ( const [ key, external, ] of state.knownExternals ) {
 			external.disconnect();
+			if ( external.target.onmessage === postMessageListener ) {
+				external.target.onmessage = null;
+			}
 		}
 		state.knownExternals.clear();
 	},

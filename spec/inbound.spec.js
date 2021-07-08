@@ -119,5 +119,36 @@ describe( "externa - inbound", () => {
 				);
 			} );
 		} );
+
+		describe( "when the remote is a web worker", () => {
+			beforeEach( () => {
+				postMessageListener( {
+					data: {
+						externa: true,
+						payload: { cal: "zone", instanceId: "lunch", type: "tastyfood", },
+					},
+					source: null,
+					currentTarget: knownExternal1,
+				} );
+			} );
+
+			it( "should not instantiate an ExternaRemoteProxy", () => {
+				proxySpy.should.not.be.called();
+			} );
+
+			it( "should handle the message", () => {
+				handleMessage.should.be.calledOnceWithExactly(
+					"tastyfood",
+					{
+						data: {
+							cal: "zone",
+							instanceId: "lunch",
+							type: "tastyfood",
+						},
+						remote: knownRemote1,
+					}
+				);
+			} );
+		} );
 	} );
 } );

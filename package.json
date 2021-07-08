@@ -4,9 +4,9 @@
   "version": "0.1.6",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ifandelse/externa.js.git"
+    "url": "git://github.com/ifandelse/externa.git"
   },
-  "homepage": "https://github.com/ifandelse/externa.js",
+  "homepage": "https://github.com/ifandelse/externa",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
@@ -30,7 +30,7 @@
   ],
   "bugs": {
     "email": "jim@ifandelse.com",
-    "url": "http://github.com/ifandelse/externa.js/issues"
+    "url": "http://github.com/ifandelse/externa/issues"
   },
   "directories": {
     "dist": "dist"
