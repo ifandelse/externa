@@ -1,7 +1,7 @@
 {
   "name": "externa",
   "description": "A library to manage communicating between windows, iframes and web workers",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/ifandelse/externa.git"

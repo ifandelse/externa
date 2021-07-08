@@ -1,5 +1,9 @@
 ## 0.x
 
+### 0.2.0
+
+* Add initial web worker support
+
 ### 0.1.6
 
 * Once more into the tag-release breach...
